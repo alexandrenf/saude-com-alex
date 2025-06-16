@@ -11,10 +11,32 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          Int      @id @default(autoincrement())
+    title       String
+    slug        String   @unique
+    excerpt     String?
+    content     String   // Markdown content
+    published   Boolean  @default(false)
+    publishedAt DateTime?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    
+    // SEO and metadata
+    metaTitle       String?
+    metaDescription String?
+    
+    // Categories and tags for health topics
+    category    String?
+    tags        String[] // Array of tags
+    
+    // Reading time estimation (in minutes)
+    readingTime Int?
+    
+    // Featured image
+    featuredImage String?
 
-    @@index([name])
+    @@index([slug])
+    @@index([published])
+    @@index([category])
+    @@index([createdAt])
 }
