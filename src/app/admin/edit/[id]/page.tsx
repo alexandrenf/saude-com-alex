@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -21,12 +21,13 @@ interface PostForm {
 }
 
 interface EditPostPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
   const router = useRouter();
-  const postId = parseInt(params.id);
+  const resolvedParams = use(params);
+  const postId = parseInt(resolvedParams.id);
   
   const [form, setForm] = useState<PostForm>({
     title: "",
